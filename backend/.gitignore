@@ -1,0 +1,6 @@
+search_logs.json
+*.log
+temp/
+.DS_Store
+node_modules/
+.env
