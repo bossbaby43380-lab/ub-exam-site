@@ -1,45 +1,55 @@
 import React, { useState } from 'react';
 
+
 function Search() {
   const [pname, setName] = useState('');
   const [matricule, setMatricule] = useState('');
   const [pdfUrl, setPdfUrl] = useState(null);
   const [error, setError] = useState('');
 
-  const handleSearch = async () => {
-    if (!pname || !matricule) {
-      setError("Both Name and Matricule are required");
+ const handleSearch = async () => {
+  if (!pname || !matricule) {
+    setError("Both Name and Matricule are required");
+    setPdfUrl(null);
+    return;
+  }
+
+  try {
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
+
+    const res = await fetch(`${BACKEND_URL}/search`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        pname: pname.trim().toUpperCase(),
+        matricule: matricule.toUpperCase()
+      }),
+    });
+
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error('Invalid server response');
+    }
+
+    if (!res.ok) {
       setPdfUrl(null);
+      setError(data?.error || 'Access denied');
       return;
     }
 
-    try {
-      const res = await fetch('http://localhost:5000/search', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          pname: pname.trim(),                  
-          matricule: matricule.toUpperCase()
-        }),
-      });
+    setPdfUrl(data.pdfUrl);
+    setError('');
+  } catch (err) {
+    console.error(err);
+    setPdfUrl(null);
+    setError('Error fetching PDF');
+  }
+};
 
-      const data = await res.json();
 
-      if (data.pdfUrl) {
-        setPdfUrl(data.pdfUrl);
-        setError('');
-      } else {
-        setPdfUrl(null);
-        setError(data.error);
-      }
-    } catch (err) {
-      console.error(err);
-      setPdfUrl(null);
-      setError('Error fetching PDF');
-    }
-  };
-
-  return (
+return (
     <div className="min-h-screen flex flex-col items-center bg-gray-900 text-gray-100 font-mono px-4 py-10">
 
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-cyan-400 mb-6 drop-shadow-[0_0_6px_cyan]">
@@ -78,16 +88,18 @@ function Search() {
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
       {/* PDF iframe */}
+
       {pdfUrl && (
         <div className="w-full max-w-3xl h-150 mb-10 border border-cyan-400 rounded-lg overflow-hidden shadow-lg">
           <iframe
-            src={`http://localhost:5000${pdfUrl}`}
+            src={pdfUrl} // <- comes from backend /search response
             title="Exam PDF"
             className="w-full h-full"
             frameBorder="0"
           />
         </div>
       )}
+
 
       {/* Footer */}
       <footer className="mt-12 text-gray-500 text-sm sm:text-base tracking-widest text-center">
