@@ -16,9 +16,14 @@ app.use(express.json());
 // ---------------------
 // Helper: Validate Matricule
 function validateMatricule(matricule) {
-  // FE + 2 digits (year) + A + 3 digits
-  const regex = /^FE\d{2}A\d{3}$/;
-  return regex.test(matricule);
+
+  // AR, FE, CT, HS + 2 digits (year) + A + 3 digits
+  const facTregex = /^(AR|AV|FE|CT|ED|HS|HP|HT)\d{2}A\d{3}$/;
+
+  // AS → only P
+  const asRegex = /^(AS|HC)\d{2}P\d{3}$/;
+
+  return facTregex.test(matricule) || asRegex.test(matricule);
 }
 
 // Helper: Log Search
