@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
   logSearch({ name: pname, matricule: upperMatricule, ip, status: 'SEARCH_INITIATED' });
 
-  // 🔑 THIS LINE IS CORRECT
+  // Use absolute PDF path on same origin
   const pdfUrl = `/api/pdf/${upperMatricule}?name=${encodeURIComponent(pname)}`;
 
   return res.json({ pdfUrl });

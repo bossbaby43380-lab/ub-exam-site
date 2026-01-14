@@ -39,15 +39,18 @@ function Search() {
       return;
     }
 
-    setPdfUrl(data.pdfUrl);
-    setError('');
+      // Use absolute URL for iframe
+      const origin = window.location.origin;
+      const absolutePdfUrl = `${origin}${data.pdfUrl}`;
+      setPdfUrl(absolutePdfUrl);
+      setError('');
+
   } catch (err) {
-    console.error(err);
+    console.error('PDF Fetch Error:', err);
     setPdfUrl(null);
     setError('Error fetching PDF');
   }
 };
-
 
 return (
     <div className="min-h-screen flex flex-col items-center bg-gray-900 text-gray-100 font-mono px-4 py-10">
