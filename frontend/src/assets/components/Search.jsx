@@ -17,7 +17,7 @@ function Search() {
   try {
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
-    const res = await fetch(`${BACKEND_URL}/search`, {
+    const res = await fetch('/api/search', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

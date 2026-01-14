@@ -3,7 +3,7 @@ import cors from 'cors';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 import * as pdfParse from 'pdf-parse';
-import { logSearch } from './logSearch.js'; // DB logger
+import { logSearch } from '../logSearch.js'; // DB logger
 
 dotenv.config();
 

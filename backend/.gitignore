@@ -4,3 +4,9 @@ temp/
 .DS_Store
 node_modules/
 .env
+
+/backend/node_modules/
+/backend/temp/
+/backend/.env
+/backend/search_logs.json
+/backend/*.log
