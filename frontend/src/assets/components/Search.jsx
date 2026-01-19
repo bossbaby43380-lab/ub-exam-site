@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-
 function Search() {
   const [pname, setName] = useState('');
   const [matricule, setMatricule] = useState('');
@@ -8,6 +7,8 @@ function Search() {
   const [error, setError] = useState('');
 
  const handleSearch = async () => {
+
+  // Check if both matricule and name are provided
   if (!pname || !matricule) {
     setError("Both Name and Matricule are required");
     setPdfUrl(null);
@@ -15,7 +16,8 @@ function Search() {
   }
 
   try {
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
+   // const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
+
 
     const res = await fetch('/api/search', {
       method: 'POST',

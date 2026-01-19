@@ -7,10 +7,12 @@ function validateMatricule(matricule) {
 }
 
 export default async function handler(req, res) {
+
+    // Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
-
+  // Destrcuturing and getting client IP
   const { pname, matricule } = req.body;
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
 

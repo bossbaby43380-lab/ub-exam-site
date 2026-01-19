@@ -1,5 +1,4 @@
-import fetch from 'node-fetch';
-import * as pdfParse from 'pdf-parse';
+import pdfParse from 'pdf-parse/lib/pdf-parse.js';
 import { logSearch } from '../../logSearch.js';
 
 // Normalize text for comparison
@@ -12,7 +11,7 @@ function normalizeText(text) {
 }
 
 export default async function handler(req, res) {
-  const { matricule, name: userName } = req.query;
+  const matricule = req.query.matricule || req.url.split('/').pop().split('?')[0];
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
 
   if (!matricule) {
